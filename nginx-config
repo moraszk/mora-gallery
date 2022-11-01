@@ -1,0 +1,151 @@
+server {
+    listen 80 default_server;
+    return 301 https://gallery.mora.u-szeged.hu$request_uri; 
+}
+
+fastcgi_cache_path /var/run/nginx-cache levels=1:2 keys_zone=gallery-cgi:1m inactive=4800m;
+fastcgi_cache_key "$request_uri";
+
+server {
+    listen 443 ssl default_server;
+    server_name gallery.mora.u-szeged.hu;
+
+    root /srv/mora-gallery/public;
+
+    client_max_body_size 5000m;
+    
+    ssl_certificate_key /etc/ssl/private/mora.u-szeged.hu.key;
+    ssl_certificate /etc/ssl/certs/mora.u-szeged.hu.cer;
+
+    location / {
+        autoindex off;
+    }
+    
+    location ^~ /error/ {
+        internal;
+        allow all;
+        auth_basic off;
+    }
+
+#    location ~ /photos/ {
+#	root /media/mora_photo;
+#    }
+
+
+    location ~*  \.(css|js)$ {
+        expires 1d;
+    }
+
+    error_page 403 /error/404.html;
+    error_page 404 /error/404.html;
+    error_page 401 /error/401.html;
+
+    add_header X-Frame-Options SAMEORIGIN;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
+gzip on;
+gzip_types application/json;
+gzip_min_length 500;
+
+    server_tokens off;
+add_header Cache-Control "public";
+
+
+        fastcgi_cache gallery-cgi;
+	fastcgi_cache_background_update on;
+
+    location = /yearlist {
+
+	limit_except GET { deny  all; }
+	root /srv/mora-gallery;
+	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+
+	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+	fastcgi_param  REQUEST_URI        $request_uri;
+	fastcgi_param  DOCUMENT_URI       $document_uri;
+	fastcgi_param  DOCUMENT_ROOT      $document_root;
+
+	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/yearlist.pl;
+
+        fastcgi_cache_valid 200 4800m;
+    }
+
+    location ~ ^\/albumlist\/([1-2][0-9][0-9][0-9])$ {
+	limit_except GET { deny  all; }
+	root /srv/mora-gallery;
+	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+
+	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+	fastcgi_param  REQUEST_URI        $request_uri;
+	fastcgi_param  DOCUMENT_URI       $document_uri;
+	fastcgi_param  DOCUMENT_ROOT      $document_root;
+
+	fastcgi_param year $1;
+
+	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/albumlist.pl;
+
+	fastcgi_cache_lock on;
+	fastcgi_cache_lock_timeout 2s;
+        fastcgi_cache_valid 200 60m;
+    }
+
+    location ~ ^\/thumbnail\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_]*\.jpg)$ {
+	limit_except GET { deny  all; }
+	root /srv/mora-gallery;
+	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+
+	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+	fastcgi_param  REQUEST_URI        $request_uri;
+	fastcgi_param  DOCUMENT_URI       $document_uri;
+	fastcgi_param  DOCUMENT_ROOT      $document_root;
+	fastcgi_param	size	400;
+	fastcgi_param	format  $1;
+	fastcgi_param	photo	$2;
+
+	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/convert.pl;
+
+        fastcgi_cache_valid 200 4800m;
+        expires 7d;
+    }
+
+    location ~ ^\/watermark\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_]*\.jpg)$ {
+	limit_except GET { deny  all; }
+	root /srv/mora-gallery;
+	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+
+	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+	fastcgi_param  REQUEST_URI        $request_uri;
+	fastcgi_param  DOCUMENT_URI       $document_uri;
+	fastcgi_param  DOCUMENT_ROOT      $document_root;
+	fastcgi_param	size	2048;
+	fastcgi_param	photo	$2;
+	fastcgi_param	format  $1;
+	fastcgi_param	watermark	/srv/mora-gallery/watermark.png;
+
+	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/convert.pl;
+
+        fastcgi_cache_valid 200 4800m;
+        expires 7d;
+    }
+
+    location ~ ^\/filelist\/([1-2][0-9][0-9][0-9])\/([a-zA-Z0-9_]*)$ {
+	limit_except GET { deny  all; }
+	root /srv/mora-gallery;
+	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+
+	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+	fastcgi_param  REQUEST_URI        $request_uri;
+	fastcgi_param  DOCUMENT_URI       $document_uri;
+	fastcgi_param  DOCUMENT_ROOT      $document_root;
+	fastcgi_param	year	$1;
+	fastcgi_param	album	$2;
+	fastcgi_param	size	2048;
+
+	fastcgi_param REQUESTED_IMAGE $uri;
+	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/filelist.pl;
+
+        fastcgi_cache_valid 200 4800m;
+        expires 1h;
+    }
+}
+
