@@ -126,6 +126,8 @@ add_header Cache-Control "public";
 
         fastcgi_cache_valid 200 4800m;
         expires 7d;
+	
+	add_header Feature-Policy "web-share self;";
     }
 
     location ~ ^\/filelist\/([1-2][0-9][0-9][0-9])\/([a-zA-Z0-9_]*)$ {
