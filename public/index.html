@@ -14,7 +14,10 @@
 		import PhotoSwipe from '/photoswipe/photoswipe.esm.js';
 
 		async function loadAlbum(year, album){
-			document.getElementById('gallery').innerHTML='Loading';
+			const LoadingTimeout = setTimeout(() => {
+  				document.getElementById('gallery').innerHTML='Fényképek betöltése&#8230;';
+			}, 2000);
+			
 			var image_list_url = 'https://gallery.mora.u-szeged.hu/filelist/' + year + '/' + album ;
 
 			//TODO cache option for fetch and others
@@ -42,6 +45,7 @@
 			new_pictures.push(newfigure);
 			});
 
+			clearTimeout(LoadingTimeout);
 			document.getElementById('gallery').replaceChildren(...new_pictures);
 
 			const lightbox = new PhotoSwipeLightbox({
