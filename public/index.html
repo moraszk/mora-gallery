@@ -68,7 +68,7 @@
 									var newalbum = document.createElement("figure"); 
 									newalbum.addEventListener("click", function(){loadAlbum(album.year, album.name);});
 									var newimg = document.createElement("img");
-									if (album.thumbnail == "null") {
+									if (!album.thumbnail) {
 										newimg.setAttribute("src","logo.png");
 									} else {
 										newimg.setAttribute("src","https://gallery.mora.u-szeged.hu/thumbnail/jpeg/" + album.year + '/' + album.name + '/' + album.thumbnail);
