@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Mora fenykepek</title>
+		<title>Móra Fényképek</title>
 
 		<link rel="shortcut icon" href="favicon.webp">
 		<link rel="stylesheet" href="photoswipe/photoswipe.css">
@@ -135,12 +135,12 @@
 			#albums > figure
 			{
 				max-width: 200px;
-				max-height: 180px;
 				border: thin grey solid;
 				display: flex;
-				flex-flow: column;
+				flex-flow: column-reverse;
 				padding: 5px;
 				cursor: pointer;
+				justify-content: flex-start;
 			}
 			#albums > figure > img
 			{
@@ -188,16 +188,30 @@
 				width: auto;
 			}
 			#gallery > span {
-			    	height: 250px;
-				max-width: 50vh !important;
+				max-width: 80vh !important;
 				width: auto;
 				border: 3px solid burlywood;
+				padding: 10px;
+				font-style: oblique;
+				text-align: center;
+				touch-action: pan-down;
+				line-height: 1.6;
+				font-size: larger;
+			}
+			body{
+				font-family: 'Trocchi', serif;
+			}
+			header{
+				font-size: 45px;
+			}
+			header > img {
+				height: 100px;
 			}
 		</style>
 	</head>
 	<body>
 		<header>
-			<img src="logo.png" height="100px"/> SZTE Móra Ferenc Szk Képarchívum
+			<img src="logo.png"/> SZTE Móra Ferenc Szakkollégium &#8211; Képarchívum
 		</header>
 		<hr />
 		<div id="years">
@@ -221,15 +235,13 @@
 							});
 					});
 			</script>
-			YEARS
 		</div>
 		<hr />
 		<div id="albums">
-			ALBUMS
 		</div>
 		<hr />
 		<div id="gallery">
-			<span>IMAGES</span>
+			<span>Válasszon a fenti albumok közül!</span>
 		</div>
 		<hr />
 		<footer>
