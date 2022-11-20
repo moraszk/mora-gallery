@@ -13,7 +13,7 @@
 		import PhotoSwipeLightbox from '/photoswipe/photoswipe-lightbox.esm.js';
 		import PhotoSwipe from '/photoswipe/photoswipe.esm.js';
 
-		async function loadAlbum(year, album){
+		async function loadAlbum(year, album, longdesc){
 			const LoadingTimeout = setTimeout(() => {
   				document.getElementById('gallery').innerHTML='Fényképek betöltése&#8230;';
 			}, 2000);
@@ -25,6 +25,12 @@
 			const image_list = await image_list_resp.json();
 
 			let new_pictures = []; 
+
+			if(!!longdesc && longdesc!='null'){
+				const ld = document.createElement("span");
+				ld.innerHTML=longdesc;
+				new_pictures.push(ld);
+			}
 
 			image_list.forEach(image => {
 			const newa = document.createElement("a");
@@ -72,7 +78,7 @@
 								let albumelements = [];
 								albums.forEach( album => {
 									var newalbum = document.createElement("figure"); 
-									newalbum.addEventListener("click", function(){loadAlbum(album.year, album.name);});
+									newalbum.addEventListener("click", function(){loadAlbum(album.year, album.name, album.longdesc);});
 									var newimg = document.createElement("img");
 									if (!album.thumbnail || album.thumbnail=='null') {
 										newimg.setAttribute("src","logo.png");
@@ -80,6 +86,9 @@
 										newimg.setAttribute("src","https://gallery.mora.u-szeged.hu/thumbnail/jpeg/" + album.year + '/' + album.name + '/' + album.thumbnail);
 									}
 									newimg.setAttribute("loading","lazy");
+									if(!!album.longdesc && album.longdesc!='null'){
+										newimg.setAttribute("alt", album.longdesc);
+									}
 									newalbum.appendChild(newimg);
 									var newcaption = document.createElement("figcaption");
 									newcaption.innerHTML=album.desc;

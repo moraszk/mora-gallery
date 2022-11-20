@@ -31,6 +31,7 @@ for (glob ( $albumstorage . "*")){
 		my $data = $json->decode($json_desc);
 
 		$desc = $data->{description};
+		$longdesc = $data->{longdescription};
 		$thumbnail = $data->{thumbnail};
 	};
 
@@ -38,6 +39,7 @@ for (glob ( $albumstorage . "*")){
 		'year' => $year,
 		'name' => $albumname,
 		'desc' => $desc,
+		'longdesc' => $longdesc,
 		'thumbnail' => $thumbnail,
 			});
 }
