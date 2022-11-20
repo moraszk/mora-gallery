@@ -37,6 +37,7 @@
 			const thumbnail = document.createElement("img");
 			thumbnail.setAttribute("src", "https://gallery.mora.u-szeged.hu/thumbnail/jpeg/" + image.filename);
 			thumbnail.setAttribute("loading","lazy");
+			thumbnail.style.aspectRatio=''+image.width+'/'+image.height;
 
 			newa.appendChild(thumbnail);
 
@@ -78,6 +79,7 @@
 									} else {
 										newimg.setAttribute("src","https://gallery.mora.u-szeged.hu/thumbnail/jpeg/" + album.year + '/' + album.name + '/' + album.thumbnail);
 									}
+									newimg.setAttribute("loading","lazy");
 									newalbum.appendChild(newimg);
 									var newcaption = document.createElement("figcaption");
 									newcaption.innerHTML=album.desc;
@@ -174,6 +176,7 @@
 				height: 250px;
 				max-height: 33vh;
 				max-width: 50vh !important;
+				width: auto;
 			}
 		</style>
 	</head>
