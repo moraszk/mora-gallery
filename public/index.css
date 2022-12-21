@@ -1,0 +1,117 @@
+body 
+{
+	font-family: 'Bitter', Georgia, Times, sans-serif;
+	
+	background-color: #fff4cc;
+}
+
+.pswp__caption__center
+{
+	text-align: center;
+}
+#img
+{
+	width: 100%;
+}
+#gallery{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: space-evenly;
+	gap: 10px;
+}
+#albums
+{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+}
+#albums > figure
+{
+	max-width: 200px;
+	border: thin grey solid;
+	display: flex;
+	flex-flow: column-reverse;
+	padding: 5px;
+	cursor: pointer;
+	justify-content: flex-start;
+}
+#albums > figure > img
+{
+	max-width: inherit;
+	max-height: inherit;
+}
+#albums > figure > figcaption
+{
+	text-align: center;
+	padding : 3px;
+	color: white;
+	background-color: #a3850f;
+}
+#years > button:hover
+{
+	background-color: #a3850f; /* Green */
+	color: white;
+}
+
+#years > button
+{
+	background-color: #edd679;
+	border: 2px solid; 
+	border-color: #a89239;
+	color: #fcf6dc;
+	padding: 16px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	transition-duration: 0.4s;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: large;
+}
+figure
+{
+	margin: 0px;
+}
+#gallery > figure > a > img {
+	height: 250px;
+	max-height: 33vh;
+	max-width: 50vh !important;
+	width: auto;
+}
+#gallery > span {
+	max-width: 80vh !important;
+	width: auto;
+	border: 3px solid burlywood;
+	padding: 10px;
+	font-style: oblique;
+	text-align: center;
+	touch-action: pan-down;
+	line-height: 1.6;
+	font-size: larger;
+}
+body{
+	font-family: 'Trocchi', serif;
+}
+header{
+	font-size: 45px;
+}
+header > img {
+	height: 100px;
+}
+#scroll-up {
+	background-color: burlywood;
+	color: white;
+	text-decoration: none;
+	padding: 10px;
+	font-style: oblique;
+	text-align: center;
+	font-size: large;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+}
+
