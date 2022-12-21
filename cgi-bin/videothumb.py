@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 import sys
 
-sys.stdout.buffer.write("Content-Type: image/jpeg\r\n\r\n".encode('ascii'))
+header = "Content-Type: image/" + os.environ.get('format', 'jpeg') + "\r\n\r\n"
+sys.stdout.buffer.write(header.encode('ascii'))
 
 import cv2
 import os
