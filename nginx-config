@@ -5,7 +5,6 @@ server {
 
 fastcgi_cache_path /var/run/nginx-cache levels=1:2 keys_zone=gallery-cgi:1m inactive=4800m;
 fastcgi_cache_key "$request_uri";
-fastcgi_param  PHOTO_PATH	/media/mora_photo/;
 
 server {
     listen 443 ssl default_server;
@@ -62,6 +61,7 @@ server {
 	root /srv/mora-gallery;
 	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
 
+	fastcgi_param  PHOTO_PATH	"/media/mora_photo/";
 	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
 	fastcgi_param  REQUEST_URI        $request_uri;
 	fastcgi_param  DOCUMENT_URI       $document_uri;
@@ -77,6 +77,7 @@ server {
 	root /srv/mora-gallery;
 	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
 
+	fastcgi_param  PHOTO_PATH	"/media/mora_photo/";
 	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
 	fastcgi_param  REQUEST_URI        $request_uri;
 	fastcgi_param  DOCUMENT_URI       $document_uri;
@@ -96,6 +97,7 @@ server {
 	root /srv/mora-gallery;
 	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
 
+	fastcgi_param  PHOTO_PATH	"/media/mora_photo/";
 	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
 	fastcgi_param  REQUEST_URI        $request_uri;
 	fastcgi_param  DOCUMENT_URI       $document_uri;
@@ -115,6 +117,7 @@ server {
 	root /srv/mora-gallery;
 	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
 
+	fastcgi_param  PHOTO_PATH	"/media/mora_photo/";
 	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
 	fastcgi_param  REQUEST_URI        $request_uri;
 	fastcgi_param  DOCUMENT_URI       $document_uri;
@@ -137,6 +140,7 @@ server {
 	root /srv/mora-gallery;
 	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
 
+	fastcgi_param  PHOTO_PATH	"/media/mora_photo/";
 	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
 	fastcgi_param  REQUEST_URI        $request_uri;
 	fastcgi_param  DOCUMENT_URI       $document_uri;
