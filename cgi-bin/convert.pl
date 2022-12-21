@@ -5,7 +5,7 @@
 use CGI;
 use Image::Magick;
 
-my $imagestorage = "/media/mora_photo/";
+my $imagestorage = $ENV{"PHOTO_PATH"} . '/';
 my $imageuri = $ENV{"photo"};
 my $format = $ENV{"format"} || "jpeg";
 

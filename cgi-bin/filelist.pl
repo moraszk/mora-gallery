@@ -3,7 +3,7 @@
 
 print "Content-Type: application/json\n\n";
 
-my $imagestorage = "/media/mora_photo/";
+my $imagestorage = $ENV{"PHOTO_PATH"} . '/';
 my $imageuriprefix = $ENV{"year"} . "/" . $ENV{"album"} . "/";
 my $imageroot = $imagestorage . $imageuriprefix ;
 my $size = $ENV{"size"} || "2048";

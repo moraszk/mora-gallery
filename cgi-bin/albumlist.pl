@@ -4,7 +4,7 @@
 print "Content-Type: application/json\n\n";
 
 my $year = $ENV{"year"} || "2022";
-my $albumstorage = "/media/mora_photo/" . $year . '/';
+my $albumstorage = $ENV{"PHOTO_PATH"} . '/' . $year . '/';
 
 my $descfilename = "/description.json";
 

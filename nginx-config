@@ -5,6 +5,7 @@ server {
 
 fastcgi_cache_path /var/run/nginx-cache levels=1:2 keys_zone=gallery-cgi:1m inactive=4800m;
 fastcgi_cache_key "$request_uri";
+fastcgi_param  PHOTO_PATH	/media/mora_photo/;
 
 server {
     listen 443 ssl default_server;

@@ -3,7 +3,7 @@
 
 print "Content-Type: application/json\n\n";
 
-my $imagestorage = "/media/mora_photo/";
+my $imagestorage = $ENV{"PHOTO_PATH"} . '/';
 
 #use strict; #TODO why results error??
 use JSON;
