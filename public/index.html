@@ -22,7 +22,7 @@
 
 			//TODO cache option for fetch and others
 			const image_list_resp = await fetch(image_list_url);
-			const image_list = await image_list_resp.json();
+			const image_list = await image_list_resp.json()['photos'];
 
 			let new_pictures = []; 
 

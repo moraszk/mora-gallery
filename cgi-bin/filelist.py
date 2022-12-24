@@ -37,6 +37,6 @@ for child in sorted(os.listdir(imageroot)):
 
     photoes.append({'filename': imageuriprefix + child, 'height': h, 'width': w})
 
-print(json.dumps(photoes))
+print(json.dumps({"photos": photoes}))
 
 
