@@ -13,7 +13,7 @@ imageroot = imagestorage + '/' + imageuriprefix
 
 photoes = list()
 
-for child in os.listdir(imageroot):
+for child in sorted(os.listdir(imageroot)):
     file = imageroot + child
     if not os.path.isfile(file):
         continue
