@@ -3,7 +3,7 @@
 print("Content-Type: application/json\n")
 
 import sys
-import cv2
+from PIL import Image
 import os
 import json
 
@@ -21,10 +21,8 @@ for child in os.listdir(imageroot):
     w = 0
     h = 0
     try:
-        img = cv2.imread(file)
-
-        orig_width = img.shape[1]
-        orig_height = img.shape[0]
+        im = Image.open(file)
+        orig_width, orig_height = im.size
 
         size = int(os.environ.get('size', 2048))
 
@@ -40,4 +38,5 @@ for child in os.listdir(imageroot):
     photoes.append({'filename': imageuriprefix + child, 'height': h, 'width': w})
 
 print(json.dumps(photoes))
+
 

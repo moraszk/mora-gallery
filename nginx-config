@@ -152,7 +152,7 @@ server {
 	fastcgi_param	size	2048;
 
 	fastcgi_param REQUESTED_IMAGE $uri;
-	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/filelist.pl;
+	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/filelist.py;
 
         fastcgi_cache_valid 200 4800m;
         expires 30m;
