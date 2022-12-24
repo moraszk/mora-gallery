@@ -94,7 +94,7 @@ server {
         fastcgi_cache_valid 200 10m;
     }
 
-    location ~ ^\/thumbnail\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_]*\.(jpg|png|jpeg|JPG))$ {
+    location ~ ^\/thumbnail\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-]*\.(jpg|png|jpeg|JPG))$ {
 	limit_except GET { deny  all; }
 	root /srv/mora-gallery;
 	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
@@ -114,7 +114,7 @@ server {
         expires 7d;
     }
 
-    location ~ ^\/watermark\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_]*\.(jpg|png|jpeg|JPG))$ {
+    location ~ ^\/watermark\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-]*\.(jpg|png|jpeg|JPG))$ {
 	limit_except GET { deny  all; }
 	root /srv/mora-gallery;
 	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
