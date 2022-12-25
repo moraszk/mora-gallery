@@ -6,37 +6,52 @@ import sys
 from PIL import Image
 import os
 import json
+import re
+import cv2
 
 imagestorage = os.environ['PHOTO_PATH']
 imageuriprefix = os.environ['year'] + '/' + os.environ['album'] + '/'
 imageroot = imagestorage + '/' + imageuriprefix
 
 photoes = list()
+videos = list()
+
+imagematch = re.compile("\.(jpg|png|jpeg|JPG))$")
 
 for child in sorted(os.listdir(imageroot)):
     file = imageroot + child
     if not os.path.isfile(file):
         continue
 
-    w = 0
-    h = 0
-    try:
-        im = Image.open(file)
-        orig_width, orig_height = im.size
+    if imagematch.match(child):
+        w = 0
+        h = 0
+        try:
+            im = Image.open(file)
+            orig_width, orig_height = im.size
 
-        size = int(os.environ.get('size', 2048))
+            size = int(os.environ.get('size', 2048))
 
-        if orig_width > orig_height:
-            h = int(orig_height * size / orig_width)
-            w = size
-        else:
-            w = int(orig_width * size / orig_height)
-            h = int(size)
-    except:
-        continue
+            if orig_width > orig_height:
+                h = int(orig_height * size / orig_width)
+                w = size
+            else:
+                w = int(orig_width * size / orig_height)
+                h = int(size)
+        except:
+            continue
 
-    photoes.append({'filename': imageuriprefix + child, 'height': h, 'width': w})
+        photoes.append({'filename': imageuriprefix + child, 'height': h, 'width': w})
+    else if child.lower().endswith(".mp4"):
+        cap = cv2.VideoCapture(file)
 
-print(json.dumps({"photos": photoes}))
+        _, img = cap.read()
+        orig_width = img.shape[1]
+        orig_height = img.shape[0]
+
+        videos.append({'filename': imageuriprefix + child, 'height': orig_height, 'width': width})
+
+
+print(json.dumps({"photos": photoes, "videos": videos}))
 
 
