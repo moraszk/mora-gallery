@@ -92,6 +92,7 @@
 
 			lightbox.init();
 			document.getElementById("gallery").scrollIntoView({behavior: "smooth"});
+			history.pushState({page: 1}, "Móra album " + year + " " + album, "?" + encodeURI(JSON.stringify({"year":year,"album":album})));
 		}
 
 	window.loadAlbum = loadAlbum;
@@ -105,6 +106,15 @@
 							albums=> {
 								console.log(albums);
 								let albumelements = [];
+								let reqalbum = "";
+								document.getElementById("albums").replaceChildren(...albumelements);
+								try{
+									urlline = JSON.parse(decodeURI(document.location.search.substring(1)));
+									reqalbum = urlline["album"];
+								} catch (err){
+									console.error("URI parse error" + err);
+									history.pushState({page: 1}, "Móra évkönyv: " + year, "?" + encodeURI(JSON.stringify({"year":year})));
+								};
 								albums.forEach( album => {
 									var newalbum = document.createElement("figure"); 
 									newalbum.addEventListener("click", function(){loadAlbum(album.year, album.name, album.longdesc);});
@@ -123,9 +133,11 @@
 									newcaption.innerHTML=album.desc;
 									newalbum.appendChild(newcaption);
 									albumelements.push(newalbum);
+
+									if(album.name == reqalbum){
+										loaadAlbum(album.year, album.name, album.longdesc);
+									}
 								});
-								document.getElementById("albums").replaceChildren(...albumelements);
-								history.pushState({page: 1}, "Móra évkönyv: " + year, "?" + encodeURI(JSON.stringify({"year":year})));
 							}
 						);
 					});
