@@ -52,7 +52,7 @@ server {
     fastcgi_buffer_size 64k;
     fastcgi_buffers 4 64k;
     fastcgi_buffering on;
-    set $photo_path "/media/mora_photo/nyilvanos_fotok";
+    set $photo_path "/media/mora_photo/nyilvanos";
 
     add_header X-GG-Cache-Status $upstream_cache_status;
 
