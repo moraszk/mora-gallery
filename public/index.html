@@ -104,15 +104,15 @@
 					resp => {
 						resp.json().then(
 							albums=> {
-								console.log(albums);
+								//console.log(albums);
 								let albumelements = [];
 								let reqalbum = "";
 								document.getElementById("albums").replaceChildren(...albumelements);
 								try{
 									urlline = JSON.parse(decodeURI(document.location.search.substring(1)));
-									reqalbum = urlline["album"];
+									reqalbum = urlline['album'];
 								} catch (err){
-									console.error("URI parse error" + err);
+									//console.error("URI parse error" + err);
 									history.pushState({page: 1}, "Móra évkönyv: " + year, "?" + encodeURI(JSON.stringify({"year":year})));
 								};
 								albums.forEach( album => {
@@ -138,6 +138,7 @@
 										loadAlbum(album.year, album.name, album.longdesc);
 									}
 								});
+								document.getElementById("albums").replaceChildren(...albumelements);
 							}
 						);
 					});
