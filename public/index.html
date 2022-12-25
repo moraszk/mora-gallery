@@ -160,6 +160,7 @@
 									urlline = JSON.parse(decodeURI(document.location.search.substring(1)));
 									listyear(urlline['year']);
 								} catch (err){
+									console.error("URI parse error" + err);
 									listyear(Math.max(...years));
 								};
 							});
