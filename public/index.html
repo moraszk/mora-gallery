@@ -125,7 +125,7 @@
 									albumelements.push(newalbum);
 								});
 								document.getElementById("albums").replaceChildren(...albumelements);
-								history.pushState({page: 1}, "Móra évkönyv: " + year, "?" + encodeURIComponent(JSON.stringify({"year":year})));
+								history.pushState({page: 1}, "Móra évkönyv: " + year, "?" + encodeURI(JSON.stringify({"year":year})));
 							}
 						);
 					});
