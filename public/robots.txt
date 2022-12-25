@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /video/
+Disallow: /thumbnail/
+Disallow: /videothumnail/
+Disallow: /yearlist
+Disallow: /albumlist/
+Disallow: /watermark/
+Disallow: /filelist/
