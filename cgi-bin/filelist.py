@@ -16,14 +16,14 @@ imageroot = imagestorage + '/' + imageuriprefix
 photoes = list()
 videos = list()
 
-imagematch = re.compile("\.(jpg|png|jpeg|JPG)$")
+imagematch = re.compile(r".*\.(jpg|png|jpeg|JPG)$")
 
 for child in sorted(os.listdir(imageroot)):
     file = imageroot + child
     if not os.path.isfile(file):
         continue
 
-    if imagematch.match(child):
+    if imagematch.match(child) is not None:
         w = 0
         h = 0
         try:
