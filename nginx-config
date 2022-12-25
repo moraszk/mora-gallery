@@ -3,11 +3,10 @@ server {
     return 301 https://gallery.mora.u-szeged.hu$request_uri; 
 }
 
-proxy_cache_path /var/run/nginx-cache levels=1:2 keys_zone=gallerycache:1m inactive=4800m;
+fastcgi_cache_path /var/run/nginx-cache levels=1:2 keys_zone=gallery-cgi:1m inactive=4800m;
+fastcgi_cache_key "$request_uri";
 
 server {
-    proxy_cache gallerycache;
-
     error_log off;
 
     listen 443 ssl default_server;
@@ -47,6 +46,9 @@ server {
     add_header Cache-Control "public";
 
 
+    fastcgi_cache gallery-cgi;
+    fastcgi_cache_background_update on;
+    fastcgi_cache_use_stale updating;
     fastcgi_buffer_size 64k;
     fastcgi_buffers 4 64k;
     fastcgi_buffering on;
@@ -69,6 +71,8 @@ server {
 	fastcgi_param  DOCUMENT_ROOT      $document_root;
 
 	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/yearlist.pl;
+
+        fastcgi_cache_valid 200 4800m;
     }
 
     location ~ ^\/albumlist\/([1-2][0-9][0-9][0-9])$ {
@@ -85,6 +89,10 @@ server {
 	fastcgi_param year $1;
 
 	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/albumlist.pl;
+
+	fastcgi_cache_lock on;
+	fastcgi_cache_lock_timeout 2s;
+        fastcgi_cache_valid 200 10m;
     }
 
     location ~ ^\/thumbnail\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-]*\.(jpg|png|jpeg|JPG))$ {
@@ -102,6 +110,8 @@ server {
 	fastcgi_param	photo	$2;
 
 	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/convert.pl;
+
+        fastcgi_cache_valid 200 4800m;
         expires 7d;
 	add_header Feature-Policy "web-share self;";
     }
@@ -123,6 +133,7 @@ server {
 
 	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/convert.pl;
 
+        fastcgi_cache_valid 200 4800m;
         expires 7d;
 	
 	add_header Feature-Policy "web-share self;";
@@ -145,6 +156,7 @@ server {
 	fastcgi_param REQUESTED_IMAGE $uri;
 	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/filelist.py;
 
+        fastcgi_cache_valid 200 4800m;
         expires 30m;
     }
 
@@ -176,6 +188,7 @@ server {
 
         fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/videothumb.py;
 
+        fastcgi_cache_valid 200 4800m;
         expires 7d;
 	add_header Feature-Policy "web-share self;";
     }
