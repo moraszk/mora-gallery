@@ -49,7 +49,7 @@ for child in sorted(os.listdir(imageroot)):
         orig_width = img.shape[1]
         orig_height = img.shape[0]
 
-        videos.append({'filename': imageuriprefix + child, 'height': orig_height, 'width': width})
+        videos.append({'filename': imageuriprefix + child, 'height': orig_height, 'width': orig_width})
 
 
 print(json.dumps({"photos": photoes, "videos": videos}))
