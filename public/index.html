@@ -166,7 +166,7 @@
 					resp => {
 						resp.json().then(years => {
 							years.sort(); years.reverse();
-								console.log(years);
+								//console.log(years);
 								let yearelements=[];
 								years.forEach(year => {
 									var newyear = 		document.createElement("button");
@@ -184,7 +184,7 @@
 									urlline = JSON.parse(decodeURI(document.location.search.substring(1)));
 									listyear(urlline['year']);
 								} catch (err){
-									console.error("URI parse error" + err);
+									//console.error("URI parse error" + err);
 									listyear(Math.max(...years));
 								};
 							});
