@@ -55,6 +55,7 @@ server {
     set $photo_path "/media/mora_photo/nyilvanos";
 
     add_header X-GG-Cache-Status $upstream_cache_status;
+    add_header X-Robots-Tag "noindex" always;   
 
     location = /yearlist {
 
