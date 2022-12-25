@@ -16,7 +16,7 @@ imageroot = imagestorage + '/' + imageuriprefix
 photoes = list()
 videos = list()
 
-imagematch = re.compile("\.(jpg|png|jpeg|JPG))$")
+imagematch = re.compile("\.(jpg|png|jpeg|JPG)$")
 
 for child in sorted(os.listdir(imageroot)):
     file = imageroot + child
