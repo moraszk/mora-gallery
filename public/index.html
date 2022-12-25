@@ -90,6 +90,10 @@
 
 			const videoPlugin = new PhotoSwipeVideoPlugin(lightbox, {});
 
+			lightbox.on('contentActivate', ({ content }) => {
+				history.pushState({page: 1}, "Móra képarchívum", content.data.src)
+			});
+
 			lightbox.init();
 			document.getElementById("gallery").scrollIntoView({behavior: "smooth"});
 			history.pushState({page: 1}, "Móra album " + year + " " + album, "?" + encodeURI(JSON.stringify({"year":year,"album":album})));
