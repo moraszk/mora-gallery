@@ -35,9 +35,6 @@ server {
 
     error_page 404 /error/404.html;
 
-    add_header X-Frame-Options SAMEORIGIN;
-    add_header X-Content-Type-Options nosniff;
-    add_header X-XSS-Protection "1; mode=block";
     gzip on;
     gzip_types application/json;
     gzip_min_length 500;
@@ -55,6 +52,9 @@ server {
     fastcgi_keep_conn on;
     set $photo_path "/media/mora_photo/nyilvanos";
 
+    add_header X-Frame-Options SAMEORIGIN;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
     add_header X-GG-Cache-Status $upstream_cache_status;
     add_header X-Robots-Tag "noindex" always;   
 
@@ -114,6 +114,11 @@ server {
         fastcgi_cache_valid 200 4800m;
         expires 7d;
 	add_header Feature-Policy "web-share self;";
+        add_header X-Frame-Options SAMEORIGIN;
+        add_header X-Content-Type-Options nosniff;
+        add_header X-XSS-Protection "1; mode=block";
+        add_header X-GG-Cache-Status $upstream_cache_status;
+        add_header X-Robots-Tag "noindex" always;   
     }
 
     location ~ ^\/watermark\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-]*\.(jpg|png|jpeg|JPG))$ {
@@ -137,6 +142,11 @@ server {
         expires 7d;
 	
 	add_header Feature-Policy "web-share self;";
+        add_header X-Frame-Options SAMEORIGIN;
+        add_header X-Content-Type-Options nosniff;
+        add_header X-XSS-Protection "1; mode=block";
+        add_header X-GG-Cache-Status $upstream_cache_status;
+        add_header X-Robots-Tag "noindex" always;   
     }
 
     location ~ ^\/filelist\/([1-2][0-9][0-9][0-9])\/([a-zA-Z0-9_]*)$ {
@@ -170,6 +180,11 @@ server {
         root $photo_path;
         try_files $1 =404;
 	add_header Feature-Policy "web-share self;";
+        add_header X-Frame-Options SAMEORIGIN;
+        add_header X-Content-Type-Options nosniff;
+        add_header X-XSS-Protection "1; mode=block";
+        add_header X-GG-Cache-Status $upstream_cache_status;
+        add_header X-Robots-Tag "noindex" always;   
     }
 
     location ~ ^\/videothumbnail\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-]*\.mp4)$ {
@@ -191,6 +206,11 @@ server {
         fastcgi_cache_valid 200 4800m;
         expires 7d;
 	add_header Feature-Policy "web-share self;";
+        add_header X-Frame-Options SAMEORIGIN;
+        add_header X-Content-Type-Options nosniff;
+        add_header X-XSS-Protection "1; mode=block";
+        add_header X-GG-Cache-Status $upstream_cache_status;
+        add_header X-Robots-Tag "noindex" always;   
     }
 
 }
