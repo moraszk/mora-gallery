@@ -157,7 +157,7 @@ server {
         expires 30m;
     }
 
-    location ~ ^\/video(\/[1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_]*\.mp4)(\?.*)?$ {
+    location ~ ^\/video(\/[1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-]*\.mp4)(\?.*)?$ {
         mp4;
         mp4_buffer_size       1m;
         mp4_max_buffer_size   5m;
@@ -168,7 +168,7 @@ server {
         try_files $1 =404;
     }
 
-    location ~ ^\/videothumbnail\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_]*\.mp4)$ {
+    location ~ ^\/videothumbnail\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-]*\.mp4)$ {
         limit_except GET { deny  all; }
         root /srv/mora-gallery;
         fastcgi_pass  unix:/var/run/fcgiwrap.socket;

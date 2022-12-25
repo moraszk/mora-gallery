@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 import sys
+import os
 
 header = "Content-Type: image/" + os.environ.get('format', 'jpeg') + "\r\n\r\n"
 sys.stdout.buffer.write(header.encode('ascii'))
 
 import cv2
-import os
 
 path = os.environ['VIDEO_PATH'] + '/' + os.environ['video']
 
