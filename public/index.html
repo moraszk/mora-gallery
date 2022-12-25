@@ -93,6 +93,9 @@
 			lightbox.on('contentActivate', ({ content }) => {
 				history.pushState({page: 1}, "Móra képarchívum", content.data.src)
 			});
+			lightbox.on('close', () => {
+				history.pushState({page: 1}, "Móra album " + year + " " + album, "?" + encodeURI(JSON.stringify({"year":year,"album":album})));
+			});
 
 			lightbox.init();
 			document.getElementById("gallery").scrollIntoView({behavior: "smooth"});
