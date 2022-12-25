@@ -42,7 +42,7 @@ for child in sorted(os.listdir(imageroot)):
             continue
 
         photoes.append({'filename': imageuriprefix + child, 'height': h, 'width': w})
-    else if child.lower().endswith(".mp4"):
+    elif child.lower().endswith(".mp4"):
         cap = cv2.VideoCapture(file)
 
         _, img = cap.read()
