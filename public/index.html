@@ -91,15 +91,15 @@
 			const videoPlugin = new PhotoSwipeVideoPlugin(lightbox, {});
 
 			lightbox.on('contentActivate', ({ content }) => {
-				history.pushState({page: 1}, "Móra képarchívum", content.data.src)
+				history.pushState({img: content.data.src}, "Móra képarchívum", content.data.src)
 			});
 			lightbox.on('close', () => {
-				history.pushState({page: 1}, "Móra album " + year + " " + album, "/?" + encodeURI(JSON.stringify({"year":year,"album":album})));
+				history.pushState({"year":year,"album":album}, "Móra album " + year + " " + album, "/?" + encodeURI(JSON.stringify({"year":year,"album":album})));
 			});
 
 			lightbox.init();
 			document.getElementById("gallery").scrollIntoView({behavior: "smooth"});
-			history.pushState({page: 1}, "Móra album " + year + " " + album, "/?" + encodeURI(JSON.stringify({"year":year,"album":album})));
+			history.pushState({"year":year,"album":album}, "Móra album " + year + " " + album, "/?" + encodeURI(JSON.stringify({"year":year,"album":album})));
 		}
 
 	window.loadAlbum = loadAlbum;
@@ -120,7 +120,7 @@
 									reqalbum = urlline['album'];
 								} catch (err){
 									//console.error("URI parse error" + err);
-									history.pushState({page: 1}, "Móra évkönyv: " + year, "/?" + encodeURI(JSON.stringify({"year":year})));
+									history.pushState({"year":year}, "Móra évkönyv: " + year, "/?" + encodeURI(JSON.stringify({"year":year})));
 								};
 								albums.forEach( album => {
 									var newalbum = document.createElement("figure"); 
@@ -174,7 +174,7 @@
 									newyear.innerHTML = year;
 									newyear.onclick=function(){
 										listyear(year);
-										history.pushState({page: 1}, "Móra évkönyv: " + year, "/?" + encodeURI(JSON.stringify({"year":year})));
+										history.pushState({"year":year}, "Móra évkönyv: " + year, "/?" + encodeURI(JSON.stringify({"year":year})));
 										document.getElementById('gallery').innerHTML="";
 									};
 									yearelements.push(newyear);
