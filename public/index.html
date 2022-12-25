@@ -97,7 +97,8 @@
 	window.loadAlbum = loadAlbum;
 		</script>
 		<script>
-			function listyear(year){ var albumlist_url = "https://gallery.mora.u-szeged.hu/albumlist/" + year;
+			function listyear(year){
+				var albumlist_url = "https://gallery.mora.u-szeged.hu/albumlist/" + year;
 				fetch(albumlist_url).then(
 					resp => {
 						resp.json().then(
@@ -124,6 +125,7 @@
 									albumelements.push(newalbum);
 								});
 								document.getElementById("albums").replaceChildren(...albumelements);
+								history.pushState({page: 1}, "Móra évkönyv: " + year, "?" + encodeURIComponent(JSON.stringify({"year":year})));
 							}
 						);
 					});
@@ -154,7 +156,12 @@
 									yearelements.push(newyear);
 								});
 								document.getElementById("years").replaceChildren(...yearelements);
-								listyear(Math.max(...years));
+								try{
+									urlline = JSON.parse(decodeURI(document.location.search.substring(1)));
+									listyear(urlline['year']);
+								} catch (err){
+									listyear(Math.max(...years));
+								};
 							});
 					});
 			</script>
