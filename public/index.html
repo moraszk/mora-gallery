@@ -175,6 +175,7 @@
 									newyear.onclick=function(){
 										listyear(year);
 										history.pushState({page: 1}, "Móra évkönyv: " + year, "/?" + encodeURI(JSON.stringify({"year":year})));
+										document.getElementById('gallery').innerHTML="";
 									};
 									yearelements.push(newyear);
 								});
