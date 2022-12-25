@@ -53,7 +53,6 @@ server {
     fastcgi_buffers 4 64k;
     fastcgi_buffering on;
     set $photo_path "/media/mora_photo/nyilvanos_fotok";
-    set $video_path "/media/mora_photo/konvertalt_videok";
 
     add_header X-GG-Cache-Status $upstream_cache_status;
 
@@ -165,7 +164,7 @@ server {
         #mp4_limit_rate        on; TODO
         #mp4_limit_rate_after  30s;
 
-        root $video_path;
+        root $photo_path;
         try_files $1 =404;
     }
 
@@ -174,7 +173,7 @@ server {
         root /srv/mora-gallery;
         fastcgi_pass  unix:/var/run/fcgiwrap.socket;
 
-        fastcgi_param  VIDEO_PATH       $video_path;
+        fastcgi_param  VIDEO_PATH       $photo_path;
         fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
         fastcgi_param  REQUEST_URI        $request_uri;
         fastcgi_param  DOCUMENT_URI       $document_uri;

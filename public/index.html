@@ -12,6 +12,7 @@
 		<script type="module">
 		import PhotoSwipeLightbox from '/photoswipe/photoswipe-lightbox.esm.js';
 		import PhotoSwipe from '/photoswipe/photoswipe.esm.js';
+		import PhotoSwipeVideoPlugin from '/photoswipe/photoswipe-video-plugin.esm.min.js';
 
 		async function loadAlbum(year, album, longdesc){
 			const LoadingTimeout = setTimeout(() => {
@@ -45,6 +46,29 @@
 			thumbnail.setAttribute("src", "https://gallery.mora.u-szeged.hu/thumbnail/jpeg/" + image.filename);
 			thumbnail.setAttribute("loading","lazy");
 			thumbnail.style.aspectRatio=''+image.width+'/'+image.height;
+
+			newa.appendChild(thumbnail);
+
+			const newfigure = document.createElement("figure");
+			newfigure.appendChild(newa);
+
+			new_pictures.push(newfigure);
+			});
+
+			const video_list = image_list_json['videos'];
+
+			video_list.forEach(video => {
+			const newa = document.createElement("a");
+			newa.setAttribute("href", "https://gallery.mora.u-szeged.hu/video/" + video.filename);
+			newa.setAttribute("data-pswp-width", video.width);
+			newa.setAttribute("data-pswp-height", video.height);
+			newa.setAttribute("data-pswp-type", "video");
+			newa.setAttribute("target", "_blank");
+
+			const thumbnail = document.createElement("img");
+			thumbnail.setAttribute("src", "https://gallery.mora.u-szeged.hu/videothumbnail/jpeg/" + video.filename);
+			thumbnail.setAttribute("loading","lazy");
+			thumbnail.style.aspectRatio=''+video.width+'/'+video.height;
 
 			newa.appendChild(thumbnail);
 
