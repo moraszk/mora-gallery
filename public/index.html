@@ -172,7 +172,10 @@
 									var newyear = 		document.createElement("button");
 									newyear.setAttribute("type", "button");
 									newyear.innerHTML = year;
-									newyear.onclick=function(){ listyear(year); };
+									newyear.onclick=function(){
+										listyear(year);
+										history.pushState({page: 1}, "Móra évkönyv: " + year, "/?" + encodeURI(JSON.stringify({"year":year})));
+									};
 									yearelements.push(newyear);
 								});
 								document.getElementById("years").replaceChildren(...yearelements);
