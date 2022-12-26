@@ -7,7 +7,6 @@ from PIL import Image
 import os
 import json
 import re
-import cv2
 
 imagestorage = os.environ['PHOTO_PATH']
 imageuriprefix = os.environ['year'] + '/' + os.environ['album'] + '/'
@@ -43,6 +42,7 @@ for child in sorted(os.listdir(imageroot)):
 
         photoes.append({'filename': imageuriprefix + child, 'height': h, 'width': w})
     elif child.lower().endswith(".mp4"):
+        import cv2
         cap = cv2.VideoCapture(file)
 
         _, img = cap.read()
