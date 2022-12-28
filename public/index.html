@@ -105,7 +105,7 @@
 			window.lightbox.init();
 			document.getElementById("gallery").scrollIntoView({behavior: "smooth"});
 			let newstate = {"year":year,"album":album}
-			if (window.history.state.year != newstate.year && window.history.state.album != newstate.album) {
+			if (window.history.state.year != newstate.year || window.history.state.album != newstate.album) {
 				history.pushState(newstate, "Móra album " + year + " " + album, "/?" + encodeURI(JSON.stringify({"year":year,"album":album})));
 			};
 		}
