@@ -158,9 +158,6 @@
 		<script>
 			AddEventListener('popstate', (event) => {
                                try{
-                                       urlline = JSON.parse(decodeURI(document.location.search.substring(1)));
-                                       if urlline.hasAttribute("img"){
-                                               window.location.href = urlline['img'];
                                        urlline = event.state;
                                        if (urlline.hasOwnProperty("img")){
                                                window.location.replace(urlline['img']);
