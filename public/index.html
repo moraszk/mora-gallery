@@ -81,11 +81,13 @@
 			clearTimeout(LoadingTimeout);
 			document.getElementById('gallery').replaceChildren(...new_pictures);
 
-			if (window.hasOwnPropery("lightbox")){
-				window.lightbox.destroy();
-			}
+                       if (window.hasOwnProperty("lightbox")){
+                                window.lightbox.destroy();
+                                delete window.lightbox;
+                       };
 
-			const window.lightbox = new PhotoSwipeLightbox({
+                       window.lightbox = new PhotoSwipeLightbox({
+
 			gallery: '#gallery',
 			children: 'a',
 			pswpModule: PhotoSwipe
