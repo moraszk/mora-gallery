@@ -157,8 +157,13 @@
 	<body>
 		<script>
 			addEventListener('popstate', (event) => {
-				urlline = JSON.parse(decodeURI(document.location.search.substring(1)));
-				listyear(urlline['year']);
+				try{
+					urlline = JSON.parse(decodeURI(document.location.search.substring(1)));
+					if urlline.hasAttribute("img"){
+						window.location.href = urlline['img'];
+					}
+					else listyear(urlline['year']);
+				} catch(error){}
 			});
 		</script>
 		<header>
