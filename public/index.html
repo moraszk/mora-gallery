@@ -81,23 +81,27 @@
 			clearTimeout(LoadingTimeout);
 			document.getElementById('gallery').replaceChildren(...new_pictures);
 
-			const lightbox = new PhotoSwipeLightbox({
+			if (window.hasOwnPropery("lightbox"){
+				window.lightbox.destroy();
+			}
+
+			const window.lightbox = new PhotoSwipeLightbox({
 			gallery: '#gallery',
 			children: 'a',
 			pswpModule: PhotoSwipe
 			});
 			//TODO webp support!!!!
 
-			const videoPlugin = new PhotoSwipeVideoPlugin(lightbox, {});
+			const videoPlugin = new PhotoSwipeVideoPlugin(window.lightbox, {});
 
-			lightbox.on('contentActivate', ({ content }) => {
+			window.lightbox.on('contentActivate', ({ content }) => {
 				history.pushState({img: content.data.src}, "Móra képarchívum", content.data.src)
 			});
-			lightbox.on('close', () => {
+			window.lightbox.on('close', () => {
 				history.pushState({"year":year,"album":album}, "Móra album " + year + " " + album, "/?" + encodeURI(JSON.stringify({"year":year,"album":album})));
 			});
 
-			lightbox.init();
+			window.lightbox.init();
 			document.getElementById("gallery").scrollIntoView({behavior: "smooth"});
 			history.pushState({"year":year,"album":album}, "Móra album " + year + " " + album, "/?" + encodeURI(JSON.stringify({"year":year,"album":album})));
 		}
