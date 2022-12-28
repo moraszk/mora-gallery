@@ -156,7 +156,12 @@
 	</head>
 	<body>
 		<script>
-			AddEventListener('popstate', (event) => {
+			addEventListener('popstate', (event) => {
+                              try{
+                                      pswp.close();
+                                      return;
+                              } catch(e) {}
+
                                try{
                                        urlline = event.state;
                                        if (urlline.hasOwnProperty("img")){
@@ -165,7 +170,6 @@
                                        else {
                                                listyear(urlline['year']); //Reads also the album in this case
                                        }
-                                       else listyear(urlline['year']);
                                 } catch(error){}
                         });
 		</script>
