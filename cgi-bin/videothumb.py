@@ -18,6 +18,9 @@ height = int(os.environ.get('size', 400))
 width = orig_width * height / orig_height
 frame = cv2.resize(img, (int(width), int(height)), interpolation = cv2.INTER_AREA)
 
+points = np.array([[25, 25], [25, 65], [65, 45]])
+cv2.fillPoly(img, pts=[points], color=(255, 255, 255))
+
 sys.stdout.buffer.write(cv2.imencode("." + os.environ.get('format', 'jpg'), frame)[1].tobytes())
 
 
