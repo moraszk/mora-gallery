@@ -1,0 +1,130 @@
+﻿\documentclass[12pt]{article}
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+\usepackage[magyar]{babel}
+
+\usepackage{bera}
+
+\usepackage{xcolor}
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+\usepackage{listings}
+\lstset{
+    language=bash, %% Troque para PHP, C, Java, etc... bash é o padrão
+    basicstyle=\ttfamily\small,
+    numberstyle=\footnotesize,
+    numbers=left,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    tabsize=2,
+    rulecolor=\color{black!30},
+    title=\lstname,
+    escapeinside={\%*}{*)},
+    breaklines=true,
+    breakatwhitespace=true,
+    framextopmargin=2pt,
+    framexbottommargin=2pt,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {í}{{\'i}}1 {é}{{\'e}}1,
+}
+\lstdefinelanguage{json}{
+    basicstyle=\normalfont\ttfamily,
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    backgroundcolor=\color{background},
+    literate=
+     *{0}{{{\color{numb}0}}}{1}
+      {1}{{{\color{numb}1}}}{1}
+      {2}{{{\color{numb}2}}}{1}
+      {3}{{{\color{numb}3}}}{1}
+      {4}{{{\color{numb}4}}}{1}
+      {5}{{{\color{numb}5}}}{1}
+      {6}{{{\color{numb}6}}}{1}
+      {7}{{{\color{numb}7}}}{1}
+      {8}{{{\color{numb}8}}}{1}
+      {9}{{{\color{numb}9}}}{1}
+      {:}{{{\color{punct}{:}}}}{1}
+      {,}{{{\color{punct}{,}}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
+}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+
+\date{2023.01.03.}
+\title{Képek feltöltése a Móra Galériába}
+\author{Kiss Ádám}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Bevezetés}
+A Móra Galéria az SZTE Móra Ferenc Szakkollégium kép- és videoarchívumaként szolgál. Fontos szempont az egyszerű és minél több platformmal kompatibilis megjelenítő felület (\url{https://gallery.mora.u-szeged.hu/}), valamint egy egyszerű képfeltöltési lehetőség biztosítása.
+
+\section{Megjeleítési képességek}
+A galéria évszámokban és albumokban gondolkodik. Minden évhez több album tartozhat. Az albumnak az alábbiak lehetnek:
+\begin{enumerate}
+\item Kép (jpg,png,jpeg vagy JPG formátumban)
+\item Videó (Böngésző kompatibilis videó és hangformátumban, mp4 tárolóban)
+\item PDF fájlok (ezek nem kerülnek be az albumokba)
+\item Egy borítókép (A leíró fájl tartalmazza)
+\item Egy albumnév (A leíró fájl tartalmazza)
+\item Egy albumelírás (A leíró fájl tartalmazza)
+\item Egy leírófájl
+\end{enumerate}
+A leírófájl úgynevezett \textit{JSON} gép-nyelvtant követel meg formai követelményként. Példa egy leírófájlra:
+
+\begin{lstlisting}[language=json]
+{
+"description": "Albumnev",
+"thumbnail": "boritokep",
+"longdescription": "Hosszabb leiras egy dobozban, a kepek mellett"
+}
+\end{lstlisting}
+Amennyiben valamilyen leírást nem szeretnénk megadni, úgy az a sor kihagyható. Ügyelni kell viszont arra, hogy az utolsó felsorolt tulajdonság után ne legyen vesszó! A leírófájlokat a fényképek mellé kell elhelyezni \textit{description.json} néven. A hosszabb leírásba beszúrhatunk kis emotikonokat, de akár HTML formázást is.
+
+A képek kis felbontásban nyilvánosságra kerülnek az interneten, illetve nagy felbontásban vízjelezve szintén nyilvánosságra kerülnek. A videókra nem kerül vízjel.
+
+\section{Képek feltöltése}
+Ahhoz, hogy valaki tudjon képet feltölteni, az egyik kollégiumi rendszergazdától engedélyt kell kérni, hogy a Fotós csoportba regisztrálja be az illető fiókját a kollégium Active Directory rendszerében.
+
+\subsection{Fájlok elérése}
+\subsubsection{Fájlok elérése Linux rendszerű számítógépeken}
+Adjuk ki a következő parancsot:
+\begin{lstlisting}
+sudo mount -t cifs //media.mora.u-szeged.hu/photo-gallery  /mnt -o username=fnev@mora.u-szeged.hu,noperm
+\end{lstlisting}
+, ahol az \textit{fnev} szövegdarabot a felhasználónevünkkel helyettesítjük. Ezt követően a gyökérkönyvtár \textit{mnt} mappájában elérhetők lesznek a fájlok.
+
+\subsubsection{Fájlok elérése Windows rendszerű számítógépeken}
+\begin{enumerate}
+\item Nyissuk le a Start + R billentyűkombinációt
+\item Írjuk be a felugró ablakba a következő szöveget, majd nyomjunk Entert: \textit{\\\\media.mora.u-szeged.hu\\photo-gallery}
+\end{enumerate}
+
+\subsection{Fényképek felmásolása}
+Válasszuk ki a \textit{Nyilvános} nevű mappát, majd ezt követően az évszámot. Hozzunk létre egy új mappát az albumnak, amennyiben még nem létezne. Ebbe a mappába másoljuk be a képeket. Mivel a weboldalon ábécé rendben jelennek meg a képek, ezért érdemes négyszámjegyű dátummal kezdeni a mappa nevét. Pl.: 0402 (Ez az április másodikát jelenti.).
+
+A mappába elhelyezhetünk leíró fájlt is a korábban bemutatott minta alapján. Talán a legegyszerűbb átmásolni egy meglévő album leíróját, és azt módosdítani. A szerkesztéshez a Notepad++ program használata ajánlott.
+\end{document}
