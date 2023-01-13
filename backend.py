@@ -18,6 +18,21 @@ root_path="/media/mora_photo/nyilvanos/"
 def hello_world():
     return 'Hello, World!'
 
+
+@app.route('/yearlist')
+def yearlist():
+    years = []
+    for entry in os.scandir(root_path):
+        if entry.is_dir():
+            year = int(entry.name)
+            if year > 1950 and year < 2030:
+                years.append(year)
+    years.sort()
+    return Response(
+            json.dumps(years),
+            mimetype='application/json')
+
+
 imagematch = re.compile(r".*\.(jpg|png|jpeg|JPG)$")
 
 @app.route('/filelist/<int:year>/<string:album>')
