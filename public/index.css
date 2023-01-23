@@ -5,6 +5,14 @@ body
 	background-color: #fff4cc;
 }
 
+div#years {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
 .pswp__caption__center
 {
 	text-align: center;
@@ -18,14 +26,17 @@ body
 	justify-content: center;
 	flex-wrap: wrap;
 	align-items: center;
-	align-content: space-evenly;
+	align-content: center;
 	gap: 10px;
 }
 #albums
 {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 5px;
+	gap: 31px;
+	align-content: center;
+	align-items: center;
+	justify-content: center;
 }
 #albums > figure
 {
@@ -36,11 +47,14 @@ body
 	padding: 5px;
 	cursor: pointer;
 	justify-content: flex-start;
+	border-radius: 10px;
 }
 #albums > figure > img
 {
 	max-width: inherit;
 	max-height: inherit;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 }
 #albums > figure > figcaption
 {
@@ -48,6 +62,8 @@ body
 	padding : 3px;
 	color: white;
 	background-color: #a3850f;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 }
 #years > button:hover
 {
@@ -58,7 +74,7 @@ body
 #years > button
 {
 	background-color: #edd679;
-	border: 2px solid; 
+	border: 2px solid;
 	border-color: #a89239;
 	color: #fcf6dc;
 	padding: 16px 32px;
@@ -71,6 +87,7 @@ body
 	cursor: pointer;
 	font-weight: bold;
 	font-size: large;
+	border-radius: 10px;
 }
 figure
 {
@@ -101,6 +118,8 @@ header{
 }
 header > img {
 	height: 100px;
+	position: relative;
+	margin-right: 15%;
 }
 #scroll-up {
 	background-color: burlywood;
@@ -114,4 +133,3 @@ header > img {
 	bottom: 20px;
 	right: 20px;
 }
-
