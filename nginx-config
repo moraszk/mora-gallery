@@ -5,9 +5,17 @@ server {
 
 fastcgi_cache_path /var/run/nginx-cache levels=1:2 keys_zone=gallery-cgi:1m inactive=4800m;
 fastcgi_cache_key "$request_uri";
+proxy_cache_path /var/run/nginx-cache2 keys_zone=backendcache:10m loader_files=5000;
+proxy_cache_key "$request_uri";
+proxy_cache_min_uses 1; #TODO tune
+proxy_cache_methods GET;
+
+upstream backend{
+	server 127.0.0.1:8000;
+}
 
 server {
-    error_log off;
+#    error_log off;
 
     listen 443 ssl default_server;
     server_name gallery.mora.u-szeged.hu;
@@ -42,6 +50,7 @@ server {
     server_tokens off;
     add_header Cache-Control "public";
 
+    proxy_cache backendcache;
 
     fastcgi_cache gallery-cgi;
     fastcgi_cache_background_update on;
@@ -95,23 +104,30 @@ server {
         fastcgi_cache_valid 200 10m;
     }
 
-    location ~ ^\/thumbnail\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-]*\.(jpg|png|jpeg|JPG))$ {
+    location ~ ^\/thumbnail\/(jpeg)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-\.]*\.(jpg|png|jpeg|JPG))$ {
 	limit_except GET { deny  all; }
-	root /srv/mora-gallery;
-	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
-
-	fastcgi_param  PHOTO_PATH	$photo_path;
-	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
-	fastcgi_param  REQUEST_URI        $request_uri;
-	fastcgi_param  DOCUMENT_URI       $document_uri;
-	fastcgi_param  DOCUMENT_ROOT      $document_root;
-	fastcgi_param	size	400;
-	fastcgi_param	format  $1;
-	fastcgi_param	photo	$2;
-
-	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/convert.pl;
-
-        fastcgi_cache_valid 200 4800m;
+	proxy_pass http://backend/$uri;
+	proxy_cache backendcache;
+	proxy_cache_valid 200 10000m;
+	proxy_ignore_headers "Set-Cookie" "X-Accel-Expires" "Expires" "Cache-Control";
+	proxy_hide_header "Set-Cookie";
+	proxy_hide_header "Cache-Control";
+	proxy_hide_header "Expires";
+#	root /srv/mora-gallery;
+#	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+#
+#	fastcgi_param  PHOTO_PATH	$photo_path;
+#	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+#	fastcgi_param  REQUEST_URI        $request_uri;
+#	fastcgi_param  DOCUMENT_URI       $document_uri;
+#	fastcgi_param  DOCUMENT_ROOT      $document_root;
+#	fastcgi_param	size	400;
+#	fastcgi_param	format  $1;
+#	fastcgi_param	photo	$2;
+#
+#	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/convert.pl;
+#
+#        fastcgi_cache_valid 200 4800m;
         expires 7d;
 	add_header Feature-Policy "web-share self;";
         add_header X-Frame-Options SAMEORIGIN;
@@ -121,24 +137,31 @@ server {
         add_header X-Robots-Tag "noindex" always;   
     }
 
-    location ~ ^\/watermark\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-]*\.(jpg|png|jpeg|JPG))$ {
+    location ~ ^\/watermark\/(jpeg)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-\.]*\.(jpg|png|jpeg|JPG))$ {
 	limit_except GET { deny  all; }
-	root /srv/mora-gallery;
-	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
-
-	fastcgi_param  PHOTO_PATH	$photo_path;
-	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
-	fastcgi_param  REQUEST_URI        $request_uri;
-	fastcgi_param  DOCUMENT_URI       $document_uri;
-	fastcgi_param  DOCUMENT_ROOT      $document_root;
-	fastcgi_param	size	2048;
-	fastcgi_param	photo	$2;
-	fastcgi_param	format  $1;
-	fastcgi_param	watermark	/srv/mora-gallery/watermark.png;
-
-	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/convert.pl;
-
-        fastcgi_cache_valid 200 4800m;
+	proxy_pass http://backend/$uri;
+	proxy_cache backendcache;
+	proxy_cache_valid 200 10000m;
+	proxy_ignore_headers "Set-Cookie" "X-Accel-Expires" "Expires" "Cache-Control";
+	proxy_hide_header "Set-Cookie";
+	proxy_hide_header "Cache-Control";
+	proxy_hide_header "Expires";
+#	root /srv/mora-gallery;
+#	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+#
+#	fastcgi_param  PHOTO_PATH	$photo_path;
+#	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+#	fastcgi_param  REQUEST_URI        $request_uri;
+#	fastcgi_param  DOCUMENT_URI       $document_uri;
+#	fastcgi_param  DOCUMENT_ROOT      $document_root;
+#	fastcgi_param	size	2048;
+#	fastcgi_param	photo	$2;
+#	fastcgi_param	format  $1;
+#	fastcgi_param	watermark	/srv/mora-gallery/watermark.png;
+#
+#	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/convert.pl;
+#
+#        fastcgi_cache_valid 200 4800m;
         expires 7d;
 	
 	add_header Feature-Policy "web-share self;";
@@ -151,22 +174,30 @@ server {
 
     location ~ ^\/filelist\/([1-2][0-9][0-9][0-9])\/([a-zA-Z0-9_]*)$ {
 	limit_except GET { deny  all; }
-	root /srv/mora-gallery;
-	fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+	proxy_pass http://backend/$uri;
+	proxy_cache backendcache;
+	proxy_cache_valid 200 10m;
+	proxy_ignore_headers "Set-Cookie" "X-Accel-Expires" "Expires" "Cache-Control";
+	proxy_hide_header "Set-Cookie";
+	proxy_hide_header "Cache-Control";
+	proxy_hide_header "Expires";
+	proxy_cache_min_uses 1;
+	#root /srv/mora-gallery;
+	#fastcgi_pass  unix:/var/run/fcgiwrap.socket;
 
-	fastcgi_param  PHOTO_PATH	$photo_path;
-	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
-	fastcgi_param  REQUEST_URI        $request_uri;
-	fastcgi_param  DOCUMENT_URI       $document_uri;
-	fastcgi_param  DOCUMENT_ROOT      $document_root;
-	fastcgi_param	year	$1;
-	fastcgi_param	album	$2;
-	fastcgi_param	size	2048;
+	#fastcgi_param  PHOTO_PATH	$photo_path;
+	#fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+	#fastcgi_param  REQUEST_URI        $request_uri;
+	#fastcgi_param  DOCUMENT_URI       $document_uri;
+	#fastcgi_param  DOCUMENT_ROOT      $document_root;
+	#fastcgi_param	year	$1;
+	#fastcgi_param	album	$2;
+	#fastcgi_param	size	2048;
 
-	fastcgi_param REQUESTED_IMAGE $uri;
-	fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/filelist.py;
+	#fastcgi_param REQUESTED_IMAGE $uri;
+	#fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/filelist.py;
 
-        fastcgi_cache_valid 200 4800m;
+        #fastcgi_cache_valid 200 4800m;
         expires 30m;
     }
 
@@ -187,23 +218,32 @@ server {
         add_header X-Robots-Tag "noindex" always;   
     }
 
-    location ~ ^\/videothumbnail\/(jpeg|webp)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-]*\.mp4)$ {
+    location ~ ^\/videothumbnail\/(jpeg)\/([1-2][0-9][0-9][0-9]\/[a-zA-Z0-9_]*\/[a-zA-Z0-9_\-]*\.mp4)$ {
         limit_except GET { deny  all; }
-        root /srv/mora-gallery;
-        fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+#        root /srv/mora-gallery;
+#        fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+#
+#        fastcgi_param  VIDEO_PATH       $photo_path;
+#        fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+#        fastcgi_param  REQUEST_URI        $request_uri;
+#        fastcgi_param  DOCUMENT_URI       $document_uri;
+#        fastcgi_param  DOCUMENT_ROOT      $document_root;
+#        fastcgi_param   size    400;
+#        fastcgi_param   format  $1;
+#        fastcgi_param   video   $2;
+#
+#        fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/videothumb.py;
+#
+#        fastcgi_cache_valid 200 4800m;
 
-        fastcgi_param  VIDEO_PATH       $photo_path;
-        fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
-        fastcgi_param  REQUEST_URI        $request_uri;
-        fastcgi_param  DOCUMENT_URI       $document_uri;
-        fastcgi_param  DOCUMENT_ROOT      $document_root;
-        fastcgi_param   size    400;
-        fastcgi_param   format  $1;
-        fastcgi_param   video   $2;
+	proxy_pass http://backend/$uri;	
+	proxy_cache backendcache;
+	proxy_cache_valid 200 10000m;
+	proxy_ignore_headers "Set-Cookie" "X-Accel-Expires" "Expires" "Cache-Control";
+	proxy_hide_header "Set-Cookie";
+	proxy_hide_header "Cache-Control";
+	proxy_hide_header "Expires";
 
-        fastcgi_param SCRIPT_FILENAME /srv/mora-gallery/cgi-bin/videothumb.py;
-
-        fastcgi_cache_valid 200 4800m;
         expires 7d;
 	add_header Feature-Policy "web-share self;";
         add_header X-Frame-Options SAMEORIGIN;

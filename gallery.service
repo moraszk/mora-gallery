@@ -1,0 +1,16 @@
+[Unit]
+Description=Mora gallery
+After=local-fs.target network.target
+RequiresMountsFor=/mora_pool/photo-gallery
+Requires=remote-fs.target
+After=remote-fs.target
+StartLimitIntervalSec=0
+StartLimitBurst=3
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/srv/mora-gallery
+ExecStart=/usr/bin/python3 backend.py
+Restart=on-failure
+RestartSec=10s
