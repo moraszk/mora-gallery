@@ -82,7 +82,7 @@ def filelist(year, album):
             json.dumps({"photos": photoes, "videos": videos}),
             mimetype='application/json')
 
-logop = Image.open("logo.png")
+logop = Image.open("/srv/mora-gallery/public/logo.png")
 logosize = 250
 logo = logop.resize((int(logop.size[0]/logop.size[1]*logosize),logosize))
 del logop
