@@ -82,6 +82,48 @@ def filelist(year, album):
             json.dumps({"photos": photoes, "videos": videos}),
             mimetype='application/json')
 
+logop = Image.open("logo.png")
+logosize = 250
+logo = logop.resize((int(logop.size[0]/logop.size[1]*logosize),logosize))
+del logop
+del logosize
+
+@app.route('/watermark/jpeg/<int:year>/<string:album>/<string:filename>')
+def watermark(year,album,filename):
+    path = root_path + '/' + str(year) + '/' + album + '/' + filename 
+
+    if not os.path.isfile(path):
+        return
+
+    im = Image.open(path)
+
+    orig_width, orig_height = im.size
+
+    size = 2048
+
+    h=0
+    w=0
+
+    if orig_width > orig_height:
+        h = int(orig_height * size / orig_width)
+        w = size
+    else:
+        w = int(orig_width * size / orig_height)
+        h = int(size)
+
+    im2 = im.resize((w,h))
+
+    im2.paste(logo, (w-logo.size[0],h-logo.size[1]), logo)
+    
+    buf = io.BytesIO()
+    
+    im2.save(buf, format='JPEG')
+
+    response = make_response(buf.getvalue())
+    response.headers.set('Content-Type', 'image/jpeg')
+    return response
+
+
 @app.route('/thumbnail/jpeg/<int:year>/<string:album>/<string:filename>')
 def imagethumb(year,album,filename):
     path = root_path + '/' + str(year) + '/' + album + '/' + filename 
@@ -93,7 +135,7 @@ def imagethumb(year,album,filename):
 
     orig_width, orig_height = im.size
 
-    size = 2048
+    size = 400
 
     h=0
     w=0
