@@ -140,7 +140,7 @@ def imagethumb(year,album,filename):
     h=0
     w=0
 
-    if orig_width > orig_height:
+    if orig_width < orig_height:
         h = int(orig_height * size / orig_width)
         w = size
     else:
