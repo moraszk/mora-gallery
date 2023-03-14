@@ -147,11 +147,11 @@ def imagethumb(year,album,filename):
         w = int(orig_width * size / orig_height)
         h = int(size)
 
-    im.resize((h,w))
+    im2 = im.resize((h,w))
     
     buf = io.BytesIO()
     
-    im.save(buf, format='JPEG')
+    im2.save(buf, format='JPEG')
 
     response = make_response(buf.getvalue())
     response.headers.set('Content-Type', 'image/jpeg')
